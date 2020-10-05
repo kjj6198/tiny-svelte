@@ -36,7 +36,7 @@ function parse(content) {
     if (parser.next("=")) {
       if (parser.next('"')) {
         const value = parser.readUntil('"');
-        console.log(parser.next('"'));
+        parser.next('"');
         return {
           value,
           type: "Attribute",
@@ -46,22 +46,29 @@ function parse(content) {
   }
 
   function attrs(node) {
+    // key=value
     parser.skip();
+    let ch = "";
+    let key = "";
 
-    if (parser.current() === ">" || parser.current() === "/") {
+    if (parser.current() === "/" || parser.current() === ">") {
       return;
     }
 
-    const attrName = parser.readUntil("=");
+    while (((ch = parser.current()), ch !== ">" && ch !== "=" && ch !== ":")) {
+      // TODO: for now, only support `=`
+      key += ch;
+      parser.index += 1;
+    }
 
     node.attrs.push({
-      key: attrName,
-      ...attr_value(), // value: name
+      name: key,
+      ...attr_value(),
     });
 
     parser.skip();
 
-    while (parser.current() !== ">" && parser.current() !== "/") {
+    if (parser.current() !== ">" && parser.current() !== "/") {
       attrs(node);
     }
   }

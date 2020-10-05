@@ -48,6 +48,58 @@ Node {
 }
 `;
 
+exports[`parse match text <div class="class"><p>Hello World</p></div>: attribute 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [
+        Object {
+          "name": "class",
+          "type": "Attribute",
+          "value": "class",
+        },
+      ],
+      "children": Array [
+        Node {
+          "attrs": Array [],
+          "children": Array [
+            Node {
+              "attrs": Array [],
+              "children": Array [],
+              "data": "Hello World",
+              "end": 33,
+              "name": "",
+              "selfClosing": false,
+              "start": 22,
+              "type": "Text",
+            },
+          ],
+          "data": "",
+          "end": 36,
+          "name": "p",
+          "selfClosing": false,
+          "start": 19,
+          "type": "Element",
+        },
+      ],
+      "data": "",
+      "end": 42,
+      "name": "div",
+      "selfClosing": false,
+      "start": 0,
+      "type": "Element",
+    },
+  ],
+  "data": "",
+  "end": 43,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
 exports[`parse match text <div><p>Hello World</p></div> 1`] = `
 Node {
   "attrs": Array [],
@@ -87,58 +139,6 @@ Node {
   ],
   "data": "",
   "end": 29,
-  "name": "",
-  "selfClosing": false,
-  "start": 0,
-  "type": "Fragment",
-}
-`;
-
-exports[`parse match text <div><p>Hello World</p></div>: attribute 1`] = `
-Node {
-  "attrs": Array [],
-  "children": Array [
-    Node {
-      "attrs": Array [
-        Object {
-          "key": "class",
-          "type": "Attribute",
-          "value": "class",
-        },
-      ],
-      "children": Array [
-        Node {
-          "attrs": Array [],
-          "children": Array [
-            Node {
-              "attrs": Array [],
-              "children": Array [],
-              "data": "Hello World",
-              "end": 33,
-              "name": "",
-              "selfClosing": false,
-              "start": 22,
-              "type": "Text",
-            },
-          ],
-          "data": "",
-          "end": 36,
-          "name": "p",
-          "selfClosing": false,
-          "start": 19,
-          "type": "Element",
-        },
-      ],
-      "data": "",
-      "end": 42,
-      "name": "div",
-      "selfClosing": false,
-      "start": 0,
-      "type": "Element",
-    },
-  ],
-  "data": "",
-  "end": 43,
   "name": "",
   "selfClosing": false,
   "start": 0,

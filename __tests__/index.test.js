@@ -9,7 +9,7 @@ describe("parse", () => {
     expect(parse("<div><p>Hello World</p></div>")).toMatchSnapshot();
   });
 
-  it("match text <div><p>Hello World</p></div>", () => {
+  it('match text <div class="class"><p>Hello World</p></div>', () => {
     expect(
       parse('<div class="class"><p>Hello World</p></div>')
     ).toMatchSnapshot("attribute");

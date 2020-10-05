@@ -84,12 +84,10 @@ function parse(content) {
   function text() {
     const node = new Node();
     node.start = parser.index;
-
     const text = parser.readUntil("<");
     node.data = text;
     node.end = parser.index;
     node.type = "Text";
-
     return node;
   }
 
@@ -98,7 +96,7 @@ function parse(content) {
     if (parser.next("=")) {
       if (parser.next('"')) {
         const value = parser.readUntil('"');
-        console.log(parser.next('"'));
+        parser.next('"');
         return {
           value,
           type: "Attribute",
@@ -108,22 +106,29 @@ function parse(content) {
   }
 
   function attrs(node) {
+    // key=value
     parser.skip();
+    let ch = "";
+    let key = "";
 
-    if (parser.current() === ">" || parser.current() === "/") {
+    if (parser.current() === "/" || parser.current() === ">") {
       return;
     }
 
-    const attrName = parser.readUntil("=");
+    while (((ch = parser.current()), ch !== ">" && ch !== "=" && ch !== ":")) {
+      // TODO: for now, only support `=`
+      key += ch;
+      parser.index += 1;
+    }
 
     node.attrs.push({
-      key: attrName,
-      ...attr_value(), // value: name
+      name: key,
+      ...attr_value(),
     });
 
     parser.skip();
 
-    while (parser.current() !== ">" && parser.current() !== "/") {
+    if (parser.current() !== ">" && parser.current() !== "/") {
       attrs(node);
     }
   }
@@ -142,7 +147,7 @@ function parse(content) {
     } else if (parser.next("/>")) {
       stack.pop();
       node.selfClosing = true;
-      node.end = parser.index - 1;
+      node.end = parser.index;
     }
 
     return node;
@@ -170,7 +175,7 @@ function parse(content) {
     }
     parser.skip();
     // 上面：把所有 parse 邏輯處理完
-    root.end = parser.index - 1;
+    root.end = parser.index;
     return root;
   }
 
