@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parse <div><p></p></div> 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": "",
+      "end": 10,
+      "name": "div",
+      "selfClosing": false,
+      "start": 0,
+      "type": "Element",
+    },
+  ],
+  "data": "",
+  "end": 10,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse match self closing: self closing 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": "",
+      "end": 9,
+      "name": "video",
+      "selfClosing": true,
+      "start": 0,
+      "type": "Element",
+    },
+  ],
+  "data": "",
+  "end": 8,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse match text <div><p>Hello World</p></div> 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [
+        Node {
+          "attrs": Array [],
+          "children": Array [
+            Node {
+              "attrs": Array [],
+              "children": Array [],
+              "data": "Hello World",
+              "end": 19,
+              "name": "",
+              "selfClosing": false,
+              "start": 8,
+              "type": "Text",
+            },
+          ],
+          "data": "",
+          "end": 22,
+          "name": "p",
+          "selfClosing": false,
+          "start": 5,
+          "type": "Element",
+        },
+      ],
+      "data": "",
+      "end": 28,
+      "name": "div",
+      "selfClosing": false,
+      "start": 0,
+      "type": "Element",
+    },
+  ],
+  "data": "",
+  "end": 28,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse match text <div><p>Hello World</p></div>: attribute 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [
+        Object {
+          "key": "class",
+          "type": "Attribute",
+          "value": "class",
+        },
+      ],
+      "children": Array [
+        Node {
+          "attrs": Array [],
+          "children": Array [
+            Node {
+              "attrs": Array [],
+              "children": Array [],
+              "data": "Hello World",
+              "end": 33,
+              "name": "",
+              "selfClosing": false,
+              "start": 22,
+              "type": "Text",
+            },
+          ],
+          "data": "",
+          "end": 36,
+          "name": "p",
+          "selfClosing": false,
+          "start": 19,
+          "type": "Element",
+        },
+      ],
+      "data": "",
+      "end": 42,
+      "name": "div",
+      "selfClosing": false,
+      "start": 0,
+      "type": "Element",
+    },
+  ],
+  "data": "",
+  "end": 42,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
