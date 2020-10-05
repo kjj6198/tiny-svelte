@@ -21,6 +21,9 @@ class Parser {
     let ch = "";
 
     while (((ch = this.current()), ch !== string)) {
+      if (this.index >= this.raw.length) {
+        return str;
+      }
       str += ch;
       this.index++;
     }

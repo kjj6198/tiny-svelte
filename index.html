@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiny Svelte</title>
+
+    <style>
+      .container {
+        display: flex;
+      }
+
+      textarea {
+        font-size: 18px;
+        font-family: Manaco, monospace;
+      }
+
+      code {
+        font-size: 16px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <textarea id="textarea" rows="30" cols="100" placeholder="輸入 HTML 語法">
+      </textarea>
+      <code id="code"> </code>
+    </div>
+    <button id="btn">編譯</button>
+  </body>
+  <script src="./main.js"></script>
+  <script>
+    btn.addEventListener("click", () => {
+      const result = parse(textarea.value);
+      code.innerHTML = `
+      <pre>
+${JSON.stringify(result, null, "\t")}
+      </pre>
+    `;
+    });
+  </script>
+</html>

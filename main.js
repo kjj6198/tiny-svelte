@@ -1,5 +1,65 @@
-const Parser = require("./parser");
-const Node = require("./Node");
+class Node {
+  constructor() {
+    this.start = 0;
+    this.end = 0;
+    this.type = "";
+    this.name = "";
+    this.selfClosing = false;
+    this.data = "";
+    this.attrs = [];
+    this.children = [];
+  }
+}
+
+class Parser {
+  constructor(raw) {
+    this.raw = raw;
+    this.index = 0;
+  }
+
+  next(string) {
+    if (this.raw.slice(this.index, this.index + string.length) === string) {
+      this.index += string.length;
+      return true;
+    }
+    return false;
+  }
+
+  current() {
+    return this.raw[this.index];
+  }
+
+  readUntil(string) {
+    let str = "";
+    let ch = "";
+
+    while (((ch = this.current()), ch !== string)) {
+      if (this.index >= this.raw.length) {
+        return str;
+      }
+      str += ch;
+      this.index++;
+    }
+    return str;
+  }
+
+  readUntilP(pattern) {
+    let str = "";
+    let ch = "";
+
+    while (((ch = this.current()), !pattern.test(ch))) {
+      str += ch;
+      this.index++;
+    }
+    return str;
+  }
+
+  skip() {
+    while (this.current() <= " ") {
+      this.index += 1;
+    }
+  }
+}
 
 function parse(content) {
   const parser = new Parser(content);
@@ -24,10 +84,12 @@ function parse(content) {
   function text() {
     const node = new Node();
     node.start = parser.index;
+
     const text = parser.readUntil("<");
     node.data = text;
     node.end = parser.index;
     node.type = "Text";
+
     return node;
   }
 
@@ -80,7 +142,7 @@ function parse(content) {
     } else if (parser.next("/>")) {
       stack.pop();
       node.selfClosing = true;
-      node.end = parser.index;
+      node.end = parser.index - 1;
     }
 
     return node;
@@ -108,11 +170,9 @@ function parse(content) {
     }
     parser.skip();
     // 上面：把所有 parse 邏輯處理完
-    root.end = parser.index;
+    root.end = parser.index - 1;
     return root;
   }
 
   return parseHTML();
 }
-
-module.exports = parse;

@@ -35,6 +35,11 @@ describe("Parser", () => {
     expect(parser.readUntil(">")).toBe("div");
   });
 
+  it("should return match string when no match", () => {
+    const parser = new Parser(`div`);
+    expect(parser.readUntil(">")).toBe("div");
+  });
+
   it("should readUntil pattern match", () => {
     const parser = new Parser(`<div class="name">`);
     parser.next("<");
