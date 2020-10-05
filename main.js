@@ -145,7 +145,6 @@ function parse(content) {
       stack.push(node);
       return node;
     } else if (parser.next("/>")) {
-      stack.pop();
       node.selfClosing = true;
       node.end = parser.index;
     }

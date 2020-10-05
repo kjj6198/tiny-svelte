@@ -18,4 +18,14 @@ describe("parse", () => {
   it("match self closing", () => {
     expect(parse("<video />")).toMatchSnapshot("self closing");
   });
+
+  it("match self closing in children", () => {
+    expect(
+      parse(`<div data-toggle="true" class="hello">
+    <p>Hello World</p>
+    <video src="self closing" />
+  </div>
+  `)
+    ).toMatchSnapshot();
+  });
 });
