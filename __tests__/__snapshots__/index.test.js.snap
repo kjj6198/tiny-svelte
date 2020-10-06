@@ -264,3 +264,104 @@ Node {
   "type": "Fragment",
 }
 `;
+
+exports[`parse should match each block 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": Object {
+        "local": "item",
+        "variable": "arr",
+      },
+      "end": 26,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "EachBlock",
+    },
+  ],
+  "data": "",
+  "end": 26,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse should match each block 2`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": Object {
+        "index": "i",
+        "local": "item",
+        "variable": "arr",
+      },
+      "end": 29,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "EachBlock",
+    },
+  ],
+  "data": "",
+  "end": 29,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse should match if block 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": Object {
+        "condition": "var",
+      },
+      "end": 14,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "IfBlock",
+    },
+  ],
+  "data": "",
+  "end": 14,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse should parse {a} 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Object {
+      "end": 3,
+      "name": "a",
+      "start": 1,
+      "type": "MustacheTag",
+    },
+  ],
+  "data": "",
+  "end": 3,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
