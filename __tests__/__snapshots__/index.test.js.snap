@@ -264,3 +264,231 @@ Node {
   "type": "Fragment",
 }
 `;
+
+exports[`parse should parse each block with index 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": Object {
+        "condition": "name",
+        "index": "i",
+        "local": "n",
+      },
+      "end": 27,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "EachBlock",
+    },
+  ],
+  "data": "",
+  "end": 27,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse should parse each block with index 2`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": Object {
+        "condition": "name",
+        "index": "i",
+        "local": "n",
+      },
+      "end": 26,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "EachBlock",
+    },
+  ],
+  "data": "",
+  "end": 26,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse should parse each block without index 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [
+        Node {
+          "attrs": Array [],
+          "children": Array [],
+          "data": "
+",
+          "end": 18,
+          "name": "",
+          "selfClosing": false,
+          "start": 17,
+          "type": "Text",
+        },
+        Node {
+          "attrs": Array [],
+          "children": Array [
+            Node {
+              "attrs": Array [],
+              "children": Array [],
+              "data": "Hello World ",
+              "end": 33,
+              "name": "",
+              "selfClosing": false,
+              "start": 21,
+              "type": "Text",
+            },
+            Object {
+              "end": 36,
+              "name": "n",
+              "start": 35,
+              "type": "MustacheTag",
+            },
+          ],
+          "data": "",
+          "end": 39,
+          "name": "p",
+          "selfClosing": false,
+          "start": 18,
+          "type": "Element",
+        },
+      ],
+      "data": Object {
+        "condition": "name",
+        "local": "n",
+      },
+      "end": 48,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "EachBlock",
+    },
+  ],
+  "data": "",
+  "end": 48,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse should parse if block 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": Object {
+        "condition": "name",
+      },
+      "end": 16,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "IfBlock",
+    },
+  ],
+  "data": "",
+  "end": 16,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;
+
+exports[`parse should parse if block with children 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [
+        Node {
+          "attrs": Array [],
+          "children": Array [],
+          "data": "
+",
+          "end": 12,
+          "name": "",
+          "selfClosing": false,
+          "start": 11,
+          "type": "Text",
+        },
+        Node {
+          "attrs": Array [],
+          "children": Array [
+            Node {
+              "attrs": Array [],
+              "children": Array [],
+              "data": "Hello World",
+              "end": 26,
+              "name": "",
+              "selfClosing": false,
+              "start": 15,
+              "type": "Text",
+            },
+          ],
+          "data": "",
+          "end": 29,
+          "name": "p",
+          "selfClosing": false,
+          "start": 12,
+          "type": "Element",
+        },
+        Node {
+          "attrs": Array [],
+          "children": Array [
+            Node {
+              "attrs": Array [],
+              "children": Array [],
+              "data": "Hello World",
+              "end": 45,
+              "name": "",
+              "selfClosing": false,
+              "start": 34,
+              "type": "Text",
+            },
+          ],
+          "data": "",
+          "end": 48,
+          "name": "p",
+          "selfClosing": false,
+          "start": 31,
+          "type": "Element",
+        },
+      ],
+      "data": Object {
+        "condition": "name",
+      },
+      "end": 59,
+      "name": "",
+      "selfClosing": false,
+      "start": 2,
+      "type": "IfBlock",
+    },
+  ],
+  "data": "",
+  "end": 59,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;

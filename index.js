@@ -24,7 +24,8 @@ function parse(content) {
   function text() {
     const node = new Node();
     node.start = parser.index;
-    const text = parser.readUntil("<");
+    const text = parser.readUntilP(/\<|\{/);
+
     node.data = text;
     node.end = parser.index;
     node.type = "Text";
@@ -92,6 +93,78 @@ function parse(content) {
     return node;
   }
 
+  function block_open() {
+    const node = new Node();
+    const keywords = ["if", "each"];
+    node.start = parser.index;
+    stack.push(node);
+    parser.skip();
+    const blockName = parser.readUntil(" ");
+    if (!keywords.includes(blockName)) {
+      throw new Error(`${blockName} is not valid block`);
+    }
+
+    const blockType = keywords[keywords.findIndex((val) => val === blockName)];
+    node.type = `${blockType[0].toUpperCase() + blockType.slice(1)}` + "Block";
+    parser.skip();
+
+    if (node.type === "IfBlock") {
+      const condition = parser.readUntil("}");
+      node.data = {
+        condition: condition.trim(),
+      };
+    }
+
+    if (node.type === "EachBlock") {
+      const condition = parser.readUntil(" ");
+      parser.skip();
+      node.data = { condition: condition };
+      if (parser.next("as")) {
+        parser.skip();
+        const local = parser.readUntilP(/,|\s?\}/);
+        node.data.local = local;
+
+        if (parser.next(",")) {
+          parser.skip();
+          const index = parser.readUntilP(/ |\}/);
+          node.data.index = index.trim();
+          parser.next(" ");
+        }
+      } else {
+        throw new Error("expected `as`");
+      }
+    }
+
+    if (parser.next("}")) {
+      return node;
+    } else {
+      throw new Error("Block is opened!");
+    }
+  }
+
+  function block_close() {
+    const current_node = stack.pop();
+    const blockName = parser.readUntil("}");
+    if (blockName !== current_node.type.replace("Block", "").toLowerCase()) {
+      throw new Error(`Block mismatch! Expected: ${blockName}`);
+    }
+    parser.next("}");
+    current_node.end = parser.index;
+  }
+
+  function mustache_tag_open() {
+    const variable = parser.readUntil("}");
+    let tag = {
+      type: "MustacheTag",
+      name: variable,
+      start: parser.index,
+    };
+
+    parser.next("}");
+    tag.end = parser.index;
+    return tag;
+  }
+
   function parseHTML() {
     let ch = parser.current();
     parser.skip();
@@ -108,6 +181,14 @@ function parse(content) {
         parseHTML();
       } else if (parser.next("<")) {
         current_node.children.push(tag_name());
+      } else if (parser.next("{#")) {
+        current_node.children.push(block_open());
+      } else if (parser.next("{/")) {
+        block_close();
+        parseHTML();
+      } else if (parser.next("{")) {
+        current_node.children.push(mustache_tag_open());
+        parseHTML();
       } else {
         current_node.children.push(text());
       }

@@ -84,10 +84,12 @@ function parse(content) {
   function text() {
     const node = new Node();
     node.start = parser.index;
-    const text = parser.readUntil("<");
+
+    const text = parser.readUntilP(/\<|\{/);
     node.data = text;
     node.end = parser.index;
     node.type = "Text";
+
     return node;
   }
 
