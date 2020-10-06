@@ -240,3 +240,27 @@ Node {
   "type": "Fragment",
 }
 `;
+
+exports[`parse pure text should be valid 1`] = `
+Node {
+  "attrs": Array [],
+  "children": Array [
+    Node {
+      "attrs": Array [],
+      "children": Array [],
+      "data": "Hello World",
+      "end": 11,
+      "name": "",
+      "selfClosing": false,
+      "start": 0,
+      "type": "Text",
+    },
+  ],
+  "data": "",
+  "end": 11,
+  "name": "",
+  "selfClosing": false,
+  "start": 0,
+  "type": "Fragment",
+}
+`;

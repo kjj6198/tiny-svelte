@@ -28,4 +28,8 @@ describe("parse", () => {
   `)
     ).toMatchSnapshot();
   });
+
+  it("pure text should be valid", () => {
+    expect(parse(`Hello World`)).toMatchSnapshot();
+  });
 });
