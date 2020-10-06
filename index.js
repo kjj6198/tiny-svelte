@@ -33,6 +33,7 @@ function parse(content) {
 
   function attr_value() {
     // TODO: handle `:`, {expression}
+    // <div data-modal={} />
     if (parser.next("=")) {
       if (parser.next('"')) {
         const value = parser.readUntil('"');

@@ -48,6 +48,9 @@ class Parser {
     let ch = "";
 
     while (((ch = this.current()), !pattern.test(ch))) {
+      if (this.index >= this.raw.length) {
+        return str;
+      }
       str += ch;
       this.index++;
     }
@@ -84,7 +87,7 @@ function parse(content) {
   function text() {
     const node = new Node();
     node.start = parser.index;
-    const text = parser.readUntil("<");
+    const text = parser.readUntilP(/\<|\{/);
     node.data = text;
     node.end = parser.index;
     node.type = "Text";
@@ -93,6 +96,7 @@ function parse(content) {
 
   function attr_value() {
     // TODO: handle `:`, {expression}
+    // <div data-modal={} />
     if (parser.next("=")) {
       if (parser.next('"')) {
         const value = parser.readUntil('"');
@@ -152,6 +156,90 @@ function parse(content) {
     return node;
   }
 
+  function block_open() {
+    // if, each
+    const keywords = ["if", "each"];
+    const node = new Node();
+    node.start = parser.index;
+
+    const blockName = parser.readUntil(" ");
+    if (!keywords.includes(blockName)) {
+      throw new Error(blockName + " is not a valid block name");
+    }
+    const blockType = keywords[keywords.findIndex((val) => val === blockName)];
+    node.type = blockType[0].toUpperCase() + blockType.slice(1) + "Block"; // IfBlock, EachBlock
+    stack.push(node);
+    if (node.type === "IfBlock") {
+      parser.skip();
+      const condition = parser.readUntil("}");
+      node.data = {
+        condition: condition.trim(),
+      };
+    }
+
+    if (node.type === "EachBlock") {
+      parser.skip();
+      const variable = parser.readUntil(" ");
+      parser.skip();
+
+      if (parser.next("as")) {
+        parser.skip();
+        const local = parser.readUntilP(/\,|\}/);
+        if (parser.next(",")) {
+          parser.skip();
+          const index = parser.readUntil("}");
+          node.data = {
+            variable: variable,
+            local,
+            index,
+          };
+        } else {
+          node.data = {
+            variable: variable,
+            local,
+          };
+        }
+      } else {
+        throw new Error("expected `as`");
+      }
+    }
+
+    if (parser.next("}")) {
+      return node;
+    } else {
+      throw new Error("Block is opened, missing }");
+    }
+  }
+
+  function block_close() {
+    const current_node = stack.pop();
+    const blockName = current_node.type; // IfBlock EachBlock
+    const name = parser.readUntil("}");
+    // if tag match
+    if (blockName.replace("Block", "").toLowerCase() !== name) {
+      throw new Error("Block mismatch!");
+    }
+    parser.next("}");
+    current_node.end = parser.index;
+  }
+
+  function parse_mustache() {
+    const tag = {
+      type: "MustacheTag",
+      start: parser.index,
+      end: parser.index,
+    };
+
+    parser.skip();
+    const name = parser.readUntil("}");
+    parser.next("}");
+    return {
+      ...tag,
+      name: name.trim(),
+      end: parser.index,
+    };
+  }
+
   function parseHTML() {
     let ch = parser.current();
     parser.skip();
@@ -168,6 +256,13 @@ function parse(content) {
         parseHTML();
       } else if (parser.next("<")) {
         current_node.children.push(tag_name());
+      } else if (parser.next("{#")) {
+        current_node.children.push(block_open());
+      } else if (parser.next("{/")) {
+        block_close();
+        parseHTML();
+      } else if (parser.next("{")) {
+        current_node.children.push(parse_mustache());
       } else {
         current_node.children.push(text());
       }

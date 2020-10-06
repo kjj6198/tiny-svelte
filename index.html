@@ -36,12 +36,16 @@
   <script src="./main.js"></script>
   <script>
     btn.addEventListener("click", () => {
-      const result = parse(textarea.value);
-      code.innerHTML = `
-      <pre>
-${JSON.stringify(result, null, "\t")}
-      </pre>
-    `;
+      try {
+        const result = parse(textarea.value);
+        code.innerHTML = `
+          <pre>
+    ${JSON.stringify(result, null, "\t")}
+          </pre>
+        `;
+      } catch (e) {
+        code.innerHTML = `<span style="color: red;"">${e.message}</span>`;
+      }
     });
   </script>
 </html>
