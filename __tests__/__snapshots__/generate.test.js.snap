@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Genretate should generate code (element with text) 1`] = `
+"
+    function append(node, target) {
+      target.appendChild(node);
+    }
+
+    let fragment = document.createDocumentFragment();
+  let div1 = document.createElement('div');
+let p1 = document.createElement('p');
+let t1 = document.createTextNode(\\"345\\");
+
+        append(
+          t1,
+          p1
+        );
+
+        append(
+          p1,
+          div1
+        );
+let p2 = document.createElement('p');
+let t2 = document.createTextNode(\\"12345\\");
+
+        append(
+          t2,
+          p2
+        );
+
+        append(
+          p2,
+          div1
+        );
+
+        append(
+          div1,
+          fragment
+        );
+document.body.appendChild(fragment);"
+`;
+
+exports[`Genretate should generate code (pure element) 1`] = `
+"
+    function append(node, target) {
+      target.appendChild(node);
+    }
+
+    let fragment = document.createDocumentFragment();
+  let div1 = document.createElement('div');
+let p1 = document.createElement('p');
+
+        append(
+          p1,
+          div1
+        );
+
+        append(
+          div1,
+          fragment
+        );
+document.body.appendChild(fragment);"
+`;
+
+exports[`Genretate should generate code attr 1`] = `
+"
+    function append(node, target) {
+      target.appendChild(node);
+    }
+
+    let fragment = document.createDocumentFragment();
+  let div1 = document.createElement('div');
+let p1 = document.createElement('p');
+p1.setAttribute(role, status)let t1 = document.createTextNode(\\"345\\");
+
+        append(
+          t1,
+          p1
+        );
+
+        append(
+          p1,
+          div1
+        );
+let p2 = document.createElement('p');
+let t2 = document.createTextNode(\\"12345\\");
+
+        append(
+          t2,
+          p2
+        );
+
+        append(
+          p2,
+          div1
+        );
+
+        append(
+          div1,
+          fragment
+        );
+document.body.appendChild(fragment);"
+`;
