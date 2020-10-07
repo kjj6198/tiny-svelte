@@ -1,4 +1,4 @@
-<div>
+<div role="status">
   <span>Hello World</span>
   <span>{a}</span>
 

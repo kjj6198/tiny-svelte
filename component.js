@@ -4,6 +4,7 @@ function append(node, target) {
 
 let fragment = document.createDocumentFragment();
 let div1 = document.createElement("div");
+div1.setAttribute(role, status);
 let t1 = document.createTextNode("\n  ");
 
 append(t1, div1);
