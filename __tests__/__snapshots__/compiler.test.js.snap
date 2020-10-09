@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component should compile js (attr) 1`] = `
+"let a = 1;
+function instance() {
+	console.log();
+}
+
+function create_fragment() {
+	let p1;
+	let t1;
+
+	return {
+		create: () => {
+			p1 = document.createElement(\\"p\\");
+			t1 = document.createTextNode(\\"html\\");
+		},
+		mount: () => {
+			p1.setAttribute(role, \\"status\\");
+			append(p1, fragment);
+			append(t1, p1);
+		}
+	};
+}"
+`;
+
+exports[`Component should compile js (mustachetag) 1`] = `
+"let a = 1;
+function instance() {
+	console.log();
+}
+
+function create_fragment() {
+	let p1;
+	let t1;
+	let span1;
+	let t2;
+
+	return {
+		create: () => {
+			p1 = document.createElement(\\"p\\");
+			t1 = document.createTextNode(\\"html \\");
+			span1 = document.createElement(\\"span\\");
+			t2 = document.createTextNode(\\"123 \\");
+		},
+		mount: () => {
+			append(p1, fragment);
+			append(t1, p1);
+			append(span1, p1);
+			append(t2, span1);
+			append(a, span1);
+		}
+	};
+}"
+`;
+
+exports[`Component should compile js (nested) 1`] = `
+"let a = 1;
+function instance() {
+	console.log();
+}
+
+function create_fragment() {
+	let p1;
+	let t1;
+	let span1;
+	let t2;
+
+	return {
+		create: () => {
+			p1 = document.createElement(\\"p\\");
+			t1 = document.createTextNode(\\"html \\");
+			span1 = document.createElement(\\"span\\");
+			t2 = document.createTextNode(\\"123\\");
+		},
+		mount: () => {
+			append(p1, fragment);
+			append(t1, p1);
+			append(span1, p1);
+			append(t2, span1);
+		}
+	};
+}"
+`;
+
+exports[`Component should compile js 1`] = `
+"
+function instance() {
+	console.log();
+}
+
+function create_fragment() {
+	let p1;
+	let t1;
+
+	return {
+		create: () => {
+			p1 = document.createElement(\\"p\\");
+			t1 = document.createTextNode(\\"html\\");
+		},
+		mount: () => {
+			append(p1, fragment);
+			append(t1, p1);
+		}
+	};
+}"
+`;
