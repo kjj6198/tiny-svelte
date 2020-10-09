@@ -365,3 +365,51 @@ Node {
   "type": "Fragment",
 }
 `;
+
+exports[`parse should parse inside <script></script> 1`] = `
+Node {
+  "body": Array [
+    Node {
+      "end": 16,
+      "expression": Node {
+        "arguments": Array [
+          Node {
+            "end": 15,
+            "raw": "'a'",
+            "start": 12,
+            "type": "Literal",
+            "value": "a",
+          },
+        ],
+        "callee": Node {
+          "computed": false,
+          "end": 11,
+          "object": Node {
+            "end": 7,
+            "name": "console",
+            "start": 0,
+            "type": "Identifier",
+          },
+          "property": Node {
+            "end": 11,
+            "name": "log",
+            "start": 8,
+            "type": "Identifier",
+          },
+          "start": 0,
+          "type": "MemberExpression",
+        },
+        "end": 16,
+        "start": 0,
+        "type": "CallExpression",
+      },
+      "start": 0,
+      "type": "ExpressionStatement",
+    },
+  ],
+  "end": 16,
+  "sourceType": "script",
+  "start": 0,
+  "type": "Program",
+}
+`;

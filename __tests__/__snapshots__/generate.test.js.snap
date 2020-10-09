@@ -71,7 +71,8 @@ exports[`Genretate should generate code attr 1`] = `
     let fragment = document.createDocumentFragment();
   let div1 = document.createElement('div');
 let p1 = document.createElement('p');
-p1.setAttribute(role, status)let t1 = document.createTextNode(\\"345\\");
+p1.setAttribute(role, status);
+let t1 = document.createTextNode(\\"345\\");
 
         append(
           t1,

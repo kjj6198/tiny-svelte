@@ -1,13 +1,25 @@
 const Parser = require("./parser");
 const Node = require("./Node");
+const acorn = require("acorn");
 
 function parse(content) {
   const parser = new Parser(content);
   const root = new Node();
   root.start = parser.index;
   root.type = "Fragment";
-
+  let js = "";
   const stack = [];
+
+  function parseJS() {
+    parser.skip();
+    if (parser.next("<script>")) {
+      js += parser.readUntil("<");
+    }
+
+    parser.next("</script>");
+  }
+
+  parseJS();
 
   function tag_name_close() {
     const tagName = parser.readUntil(">");
@@ -210,7 +222,10 @@ function parse(content) {
     return root;
   }
 
-  return parseHTML();
+  return {
+    html: parseHTML(),
+    js: acorn.parse(js),
+  };
 }
 
 module.exports = parse;

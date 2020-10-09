@@ -2,7 +2,7 @@ const walk = require("./walk");
 const parse = require("./index");
 
 function generate(content) {
-  const ast = parse(content);
+  const ast = parse(content).html;
   let code = "";
   let varMap = new Map();
   code += `
