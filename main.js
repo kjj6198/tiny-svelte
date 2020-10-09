@@ -1,277 +1,47 @@
-class Node {
-  constructor() {
-    this.start = 0;
-    this.end = 0;
-    this.type = "";
-    this.name = "";
-    this.selfClosing = false;
-    this.data = "";
-    this.attrs = [];
-    this.children = [];
-  }
+let article = `Hi this is Kalan! We finally built a mini-svelte!`;
+let text2 = "但是現在還有很多功能是沒有實作的，例如依賴追蹤、生命週期、if else 等等。";
+function instance() {
+	console.log("Run Time JavaScript~");
+	setTimeout(() => text2 = "It is not reactive currently...", 2000);
 }
 
-class Parser {
-  constructor(raw) {
-    this.raw = raw;
-    this.index = 0;
-  }
+function create_fragment() {
+	let div1;
+	let t1;
+	let article1;
+	let p1;
+	let t2;
+	let p2;
+	let t3;
+	let video1;
+	let t4;
 
-  next(string) {
-    if (this.raw.slice(this.index, this.index + string.length) === string) {
-      this.index += string.length;
-      return true;
-    }
-    return false;
-  }
-
-  current() {
-    return this.raw[this.index];
-  }
-
-  readUntil(string) {
-    let str = "";
-    let ch = "";
-
-    while (((ch = this.current()), ch !== string)) {
-      if (this.index >= this.raw.length) {
-        return str;
-      }
-      str += ch;
-      this.index++;
-    }
-    return str;
-  }
-
-  readUntilP(pattern) {
-    let str = "";
-    let ch = "";
-
-    while (((ch = this.current()), !pattern.test(ch))) {
-      if (this.index >= this.raw.length) {
-        return str;
-      }
-      str += ch;
-      this.index++;
-    }
-    return str;
-  }
-
-  skip() {
-    while (this.current() <= " ") {
-      this.index += 1;
-    }
-  }
-}
-
-function parse(content) {
-  const parser = new Parser(content);
-  const root = new Node();
-  root.start = parser.index;
-  root.type = "Fragment";
-
-  const stack = [];
-
-  function tag_name_close() {
-    const tagName = parser.readUntil(">");
-    const current_node = stack.pop();
-    current_node.end = parser.index;
-
-    parser.next(">");
-
-    if (current_node.name !== tagName) {
-      throw new Error("Tag name mismatch!!");
-    }
-  }
-
-  function text() {
-    const node = new Node();
-    node.start = parser.index;
-    const text = parser.readUntilP(/\<|\{/);
-    node.data = text;
-    node.end = parser.index;
-    node.type = "Text";
-    return node;
-  }
-
-  function attr_value() {
-    // TODO: handle `:`, {expression}
-    // <div data-modal={} />
-    if (parser.next("=")) {
-      if (parser.next('"')) {
-        const value = parser.readUntil('"');
-        parser.next('"');
-        return {
-          value,
-          type: "Attribute",
-        };
-      }
-    }
-  }
-
-  function attrs(node) {
-    // key=value
-    parser.skip();
-    let ch = "";
-    let key = "";
-
-    if (parser.current() === "/" || parser.current() === ">") {
-      return;
-    }
-
-    while (((ch = parser.current()), ch !== ">" && ch !== "=" && ch !== ":")) {
-      // TODO: for now, only support `=`
-      key += ch;
-      parser.index += 1;
-    }
-
-    node.attrs.push({
-      name: key,
-      ...attr_value(),
-    });
-
-    parser.skip();
-
-    if (parser.current() !== ">" && parser.current() !== "/") {
-      attrs(node);
-    }
-  }
-
-  function tag_name() {
-    const node = new Node();
-    node.start = parser.index - 1;
-    const tagName = parser.readUntilP(/ |\>/);
-    node.name = tagName;
-    node.type = "Element";
-
-    attrs(node);
-    if (parser.next(">")) {
-      stack.push(node);
-      return node;
-    } else if (parser.next("/>")) {
-      node.selfClosing = true;
-      node.end = parser.index;
-    }
-
-    return node;
-  }
-
-  function block_open() {
-    // if, each
-    const keywords = ["if", "each"];
-    const node = new Node();
-    node.start = parser.index;
-
-    const blockName = parser.readUntil(" ");
-    if (!keywords.includes(blockName)) {
-      throw new Error(blockName + " is not a valid block name");
-    }
-    const blockType = keywords[keywords.findIndex((val) => val === blockName)];
-    node.type = blockType[0].toUpperCase() + blockType.slice(1) + "Block"; // IfBlock, EachBlock
-    stack.push(node);
-    if (node.type === "IfBlock") {
-      parser.skip();
-      const condition = parser.readUntil("}");
-      node.data = {
-        condition: condition.trim(),
-      };
-    }
-
-    if (node.type === "EachBlock") {
-      parser.skip();
-      const variable = parser.readUntil(" ");
-      parser.skip();
-
-      if (parser.next("as")) {
-        parser.skip();
-        const local = parser.readUntilP(/\,|\}/);
-        if (parser.next(",")) {
-          parser.skip();
-          const index = parser.readUntil("}");
-          node.data = {
-            variable: variable,
-            local,
-            index,
-          };
-        } else {
-          node.data = {
-            variable: variable,
-            local,
-          };
-        }
-      } else {
-        throw new Error("expected `as`");
-      }
-    }
-
-    if (parser.next("}")) {
-      return node;
-    } else {
-      throw new Error("Block is opened, missing }");
-    }
-  }
-
-  function block_close() {
-    const current_node = stack.pop();
-    const blockName = current_node.type; // IfBlock EachBlock
-    const name = parser.readUntil("}");
-    // if tag match
-    if (blockName.replace("Block", "").toLowerCase() !== name) {
-      throw new Error("Block mismatch!");
-    }
-    parser.next("}");
-    current_node.end = parser.index;
-  }
-
-  function parse_mustache() {
-    const tag = {
-      type: "MustacheTag",
-      start: parser.index,
-      end: parser.index,
-    };
-
-    parser.skip();
-    const name = parser.readUntil("}");
-    parser.next("}");
-    return {
-      ...tag,
-      name: name.trim(),
-      end: parser.index,
-    };
-  }
-
-  function parseHTML() {
-    let ch = parser.current();
-    parser.skip();
-    while (((ch = parser.current()), ch)) {
-      let current_node = null;
-      if (stack.length === 0) {
-        current_node = root;
-      } else {
-        current_node = stack.slice(-1)[0];
-      }
-
-      if (parser.next("</")) {
-        tag_name_close();
-        parseHTML();
-      } else if (parser.next("<")) {
-        current_node.children.push(tag_name());
-      } else if (parser.next("{#")) {
-        current_node.children.push(block_open());
-      } else if (parser.next("{/")) {
-        block_close();
-        parseHTML();
-      } else if (parser.next("{")) {
-        current_node.children.push(parse_mustache());
-      } else {
-        current_node.children.push(text());
-      }
-    }
-    parser.skip();
-    // 上面：把所有 parse 邏輯處理完
-    root.end = parser.index;
-    return root;
-  }
-
-  return parseHTML();
+	return {
+		create: () => {
+			div1 = document.createElement("div");
+			t1 = document.createTextNode("\n  ");
+			article1 = document.createElement("article");
+			p1 = document.createElement("p");
+			t2 = document.createTextNode("Hello World ");
+			p2 = document.createElement("p");
+			t3 = document.createTextNode("You can also add attribute");
+			video1 = document.createElement("video");
+			t4 = document.createTextNode("\n");
+		},
+		mount: () => {
+			append(div1, fragment);
+			append(t1, div1);
+			append(article1, div1);
+			append(text(article), article1);
+			append(p1, fragment);
+			append(t2, p1);
+			append(text(text2), p1);
+			p2.setAttribute("aria-label", "My Text");
+			append(p2, fragment);
+			append(t3, p2);
+			video1.setAttribute("src", "https://xxx.xx");
+			append(video1, fragment);
+			append(t4, fragment);
+		}
+	};
 }
