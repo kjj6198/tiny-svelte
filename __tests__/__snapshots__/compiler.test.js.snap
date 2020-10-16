@@ -16,7 +16,7 @@ function create_fragment() {
 			t1 = document.createTextNode(\\"html\\");
 		},
 		mount: () => {
-			p1.setAttribute(role, \\"status\\");
+			p1.setAttribute(\\"role\\", \\"status\\");
 			append(p1, fragment);
 			append(t1, p1);
 		}
@@ -48,7 +48,7 @@ function create_fragment() {
 			append(t1, p1);
 			append(span1, p1);
 			append(t2, span1);
-			append(a, span1);
+			append(text(a), span1);
 		}
 	};
 }"
