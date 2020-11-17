@@ -1,6 +1,7 @@
 # tiny-svelte
 
-[demo](https://kjj6198.github.io/tiny-svelte)
+[compile](https://kjj6198.github.io/tiny-svelte/site/)
+[generated](https://kjj6198.github.io/tiny-svelte)
 
 A tiny svelte implementation to demostrate how it works. It contains a small parser and code-generator.
 

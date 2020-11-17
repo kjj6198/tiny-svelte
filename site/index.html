@@ -40,7 +40,7 @@
         const result = parse(textarea.value);
         code.innerHTML = `
           <pre>
-    ${JSON.stringify(result, null, "\t")}
+    ${JSON.stringify(result, null, "  ")}
           </pre>
         `;
       } catch (e) {

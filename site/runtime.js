@@ -1,4 +1,5 @@
-window.fragment = document.body;
+// root
+window.fragment = document.querySelector('#app');
 
 function text(text) {
   return document.createTextNode(text);

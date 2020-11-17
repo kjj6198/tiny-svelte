@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generated component</title>
+  </head>
+  <body>
+    <h1>Svelte 元件</h1>
+    <code>
+      <pre id="code">
+&lt;script&gt;
+  let article = `Hi this is Kalan! We finally built a mini-svelte!`;
+  let text2 =
+    "但是現在還有很多功能是沒有實作的，例如依賴追蹤、生命週期、if else 等等。";
+
+  console.log("Run Time JavaScript~");
+
+  setTimeout(() =&gt; (text2 = "It is not reactive currently..."), 2000);
+&lt;/script&gt;
+
+&lt;div&gt;
+  &lt;article&gt;{article}&lt;/article&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Hello World {text2}&lt;/p&gt;
+
+&lt;p aria-label="My Text"&gt;You can also add attribute&lt;/p&gt;
+&lt;video src="https://xxx.xx" /&gt;
+      </pre>
+    </code>
+    <h1>編譯後</h1>
+    <div id="app">
+      
+    </div>
+  </body>
+  <script src="generated.js"></script>
+  <script src="runtime.js"></script>
+</html>
