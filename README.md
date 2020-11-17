@@ -17,5 +17,5 @@
 [generated](https://kjj6198.github.io/tiny-svelte/site/generated.html)
 
 將 repo 當中的 [App.svelte](https://github.com/kjj6198/tiny-svelte/blob/master/App.svelte) 轉換為 JavaScript 程式碼，
-實作並沒有考慮 reactive 以及像是 if else 等語法支援，這邊主要展示 Svelte 是怎麼轉換成 JavaScript 程式碼的。
+實作並沒有考慮 reactive 以及像是 if else 等語法支援，這邊主要展示 Svelte 是怎麼轉換成 JavaScript 程式碼的。
 
